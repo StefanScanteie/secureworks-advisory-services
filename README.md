@@ -32,7 +32,7 @@ A dynamic, interactive web-based questionnaire for Sophos Incident Management an
 ## File Structure
 
 ```
-svcs/
+root/
 ├── questionnaire.html    # Main HTML file
 ├── styles.css            # Sophos-branded CSS styles
 ├── script.js             # JavaScript for interactivity and PDF export
@@ -91,10 +91,10 @@ The exported PDF includes only:
 
 ## Browser Support
 
-- Google Chrome (recommended)
-- Mozilla Firefox
-- Microsoft Edge
 - Safari
+- Microsoft Edge
+- Google Chrome
+- Mozilla Firefox
 - Opera
 
 ---
