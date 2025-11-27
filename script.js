@@ -1,13 +1,107 @@
 /**
  * Sophos IMR Advisory Services Questionnaire
- * JavaScript - Using browser print for PDF generation
+ * JavaScript - Enhanced with progress tracking and auto-save
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    initializeExplainButtons();
     initializeInterestedCheckboxes();
     initializeCollapsibleSections();
+    initializeProgressBar();
+    initializeAutoSave();
+    loadSavedData();
 });
 
+// ==================== EXPLAIN WITH PERPLEXITY ====================
+
+// Service name to documentation slug mapping
+const serviceDocSlugs = {
+    'Incident Response Plan Development': 'incident-response-plan-development',
+    'Incident Response Plan Review': 'incident-response-plan-review',
+    'Incident Response Playbook Development': 'incident_response_playbook_development',
+    'Custom Application Security Assessment': 'custom-application-security-assessment',
+    'Mobile Application Security Assessment': 'mobile-application-security-assessment',
+    'Secure Code Analysis': 'secure-code-analysis',
+    'Web Application Security Assessment': 'web-application-security-assessment',
+    'Web Service/API Test': 'web-service-test',
+    'Cloud Penetration Test': 'cloud-penetration-test',
+    'External Penetration Test': 'external-penetration-test',
+    'Internal Penetration Test': 'internal-penetration-test',
+    'Physical Security Testing': 'physical_security_testing',
+    'Wireless Network Penetration Test': 'wireless-network-penetration-test',
+    'Device Penetration Test': 'device-penetration-test',
+    'Laptop Penetration Test': 'laptop-penetration-test',
+    'Medical Device Test': 'medical-device-test',
+    'SAP Penetration Test': 'sap-penetration-test',
+    'Phishing Drill – Click and Log': 'phishing_drill',
+    'Phishing Drill – Credential Capture': 'phishing_drill',
+    'Vishing Drill': 'vishing_drill',
+    'Active Directory Security Assessment': 'active_directory_security_assessment',
+    'Entra ID Security Assessment': 'microsoft_entra_id_security_assessment',
+    'Password Cracking and Analysis Assessment': 'password-analysis',
+    'Threat Hunting Assessment': 'threat-hunting-assessment',
+    'Vulnerability Assessment': 'vulnerability_assessment',
+    'EBS Info Brief': 'ebs_info_brief',
+    'Threat Landscape Brief': 'threat-brief',
+    'Threat Intelligence Support Services': 'threat_intelligence_support_services',
+    'Collaborative Adversary Exercise': 'collaborative_adversary_exercise',
+    'Adversary Emulation Exercise': 'adversary_emulation_exercise',
+    'Adversary Simulation Exercise': 'adversary_simulation_exercise',
+    'Functional Exercise': 'functional-exercise',
+    'Incident Response Fundamentals Training': 'incident-response-fundamentals-training',
+    'Incident Response Tabletop Exercise': 'tabletop-exercise',
+    'Incident Response Drills': 'tabletop-exercise',
+    'Taegis Health Check': 'taegis_health_check',
+    'Taegis Enablement: Core': 'taegis_enablement_core',
+    'Taegis Enablement: Plus': 'taegis_enablement_plus',
+    'Taegis Training': 'taegis_training',
+    'Data Collection & Integration': 'data_collection_and_integration',
+    'Customization Services': 'taegis_customizations',
+    'Ransomware Preparedness Program': 'imr-services-catalog-overview',
+    'Technical Assistance Services': 'imr-services-catalog-overview'
+};
+
+function initializeExplainButtons() {
+    document.querySelectorAll('.service-block').forEach(block => {
+        const header = block.querySelector('.service-header');
+        const titleEl = block.querySelector('.service-title');
+        const checkbox = block.querySelector('.interested-checkbox');
+        
+        if (!header || !titleEl || !checkbox) return;
+        
+        const serviceName = titleEl.textContent.trim();
+        const docSlug = serviceDocSlugs[serviceName] || 'imr-services-catalog-overview';
+        
+        // Create wrapper div for actions
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'service-actions';
+        
+        // Create explain button
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'explain-btn';
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg> Explain with AI`;
+        btn.onclick = () => explainWithAI(serviceName, docSlug);
+        
+        // Move checkbox into actions div
+        actionsDiv.appendChild(btn);
+        actionsDiv.appendChild(checkbox);
+        header.appendChild(actionsDiv);
+    });
+}
+
+function explainWithAI(serviceName, docSlug) {
+    const baseUrl = 'https://www.perplexity.ai/search?q=';
+    const docUrl1 = `https://docs.taegis.secureworks.com/services/incident-response/imr-services-catalog/${docSlug}/`;
+    const docUrl2 = 'https://docs.taegis.secureworks.com/services/incident-response/imr-services-catalog/imr-services-catalog-overview/';
+    
+    const prompt = `Using ONLY the official Secureworks documentation at ${docUrl1} and ${docUrl2} - Explain the "${serviceName}" service from the Secureworks Incident Management Retainer (IMR) catalog: 1. What is this service? 2. What is included? 3. Who should consider this? 4. Service Units required 5. Prerequisites or requirements. Keep it professional but easy to understand.`;
+    
+    const encodedPrompt = encodeURIComponent(prompt);
+    window.open(baseUrl + encodedPrompt, '_blank');
+}
+
+// ==================== COLLAPSIBLE SECTIONS ====================
 function initializeCollapsibleSections() {
     const sections = document.querySelectorAll('.section');
     
@@ -26,6 +120,19 @@ function initializeCollapsibleSections() {
     });
 }
 
+function expandAllSections() {
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('collapsed');
+    });
+}
+
+function collapseAllSections() {
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('collapsed');
+    });
+}
+
+// ==================== INTERESTED CHECKBOXES ====================
 function initializeInterestedCheckboxes() {
     const checkboxes = document.querySelectorAll('.interested-checkbox input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
@@ -34,8 +141,123 @@ function initializeInterestedCheckboxes() {
             if (serviceBlock) {
                 serviceBlock.classList.toggle('interested', this.checked);
             }
+            updateProgressStats();
+            triggerAutoSave();
         });
     });
+}
+
+// ==================== PROGRESS BAR ====================
+function initializeProgressBar() {
+    updateProgressStats();
+    document.getElementById('questionnaire-form')?.addEventListener('change', updateProgressStats);
+}
+
+function updateProgressStats() {
+    const selectedServices = document.querySelectorAll('.service-block.interested').length;
+    const totalSections = document.querySelectorAll('.section').length;
+    const sectionsWithSelections = new Set(
+        Array.from(document.querySelectorAll('.service-block.interested'))
+            .map(s => s.closest('.section'))
+    ).size;
+    
+    const selectedEl = document.getElementById('selected-count');
+    const sectionsEl = document.getElementById('sections-count');
+    
+    if (selectedEl) {
+        const oldValue = parseInt(selectedEl.textContent) || 0;
+        selectedEl.textContent = selectedServices;
+        if (oldValue !== selectedServices) {
+            selectedEl.classList.remove('pulse');
+            void selectedEl.offsetWidth; // Trigger reflow
+            selectedEl.classList.add('pulse');
+        }
+    }
+    
+    if (sectionsEl) {
+        sectionsEl.textContent = `${sectionsWithSelections}/${totalSections - 1}`;
+    }
+}
+
+// ==================== AUTO-SAVE ====================
+let autoSaveTimeout;
+
+function initializeAutoSave() {
+    const form = document.getElementById('questionnaire-form');
+    if (!form) return;
+    form.addEventListener('input', triggerAutoSave);
+    form.addEventListener('change', triggerAutoSave);
+}
+
+function triggerAutoSave() {
+    clearTimeout(autoSaveTimeout);
+    showSaveIndicator('saving');
+    autoSaveTimeout = setTimeout(() => {
+        saveFormData();
+        showSaveIndicator('saved');
+    }, 1000);
+}
+
+function showSaveIndicator(state) {
+    const indicator = document.getElementById('autosave-indicator');
+    if (!indicator) return;
+    
+    if (state === 'saving') {
+        indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="animation: spin 1s linear infinite;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Saving...';
+        indicator.classList.add('saving');
+    } else {
+        indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Saved';
+        indicator.classList.remove('saving');
+    }
+}
+
+function saveFormData() {
+    const form = document.getElementById('questionnaire-form');
+    if (!form) return;
+    
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => { data[key] = value; });
+    form.querySelectorAll('input[type="checkbox"]').forEach(cb => { data[cb.name] = cb.checked; });
+    
+    localStorage.setItem('questionnaire_data', JSON.stringify(data));
+    localStorage.setItem('questionnaire_saved_at', new Date().toISOString());
+}
+
+function loadSavedData() {
+    const savedData = localStorage.getItem('questionnaire_data');
+    if (!savedData) return;
+    
+    try {
+        const data = JSON.parse(savedData);
+        const form = document.getElementById('questionnaire-form');
+        
+        Object.keys(data).forEach(key => {
+            const element = form.querySelector(`[name="${key}"]`);
+            if (!element) return;
+            
+            if (element.type === 'checkbox') {
+                element.checked = data[key] === true;
+                if (element.checked) {
+                    const serviceBlock = element.closest('.service-block');
+                    if (serviceBlock) serviceBlock.classList.add('interested');
+                }
+            } else if (element.type === 'radio') {
+                if (element.value === data[key]) element.checked = true;
+            } else {
+                element.value = data[key];
+            }
+        });
+        
+        updateProgressStats();
+        
+        const indicator = document.getElementById('autosave-indicator');
+        if (indicator) {
+            indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Restored';
+        }
+    } catch (e) {
+        console.error('Error loading saved data:', e);
+    }
 }
 
 function downloadPDF() {
@@ -277,8 +499,13 @@ function escapeHtml(str) {
 }
 
 function clearForm() {
-    if (confirm('Clear all responses?')) {
+    if (confirm('Clear all responses? This will also clear saved data.')) {
         document.getElementById('questionnaire-form').reset();
         document.querySelectorAll('.service-block.interested').forEach(b => b.classList.remove('interested'));
+        localStorage.removeItem('questionnaire_data');
+        localStorage.removeItem('questionnaire_saved_at');
+        updateProgressStats();
+        const indicator = document.getElementById('autosave-indicator');
+        if (indicator) indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Cleared';
     }
 }

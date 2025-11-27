@@ -277,10 +277,52 @@ body {
     white-space: nowrap;
     transition: all 0.2s;
     border: 2px solid transparent;
+    height: 42px;
+    box-sizing: border-box;
 }
 
 .interested-checkbox:hover {
     background: #d4e4f4;
+}
+
+/* Explain with AI Button */
+.explain-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--white);
+    border: 2px solid var(--sophos-border);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--sophos-gray);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.explain-btn:hover {
+    border-color: var(--sophos-blue);
+    color: var(--sophos-blue);
+    background: var(--sophos-bg);
+}
+
+.explain-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+.service-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .interested-checkbox input {
@@ -589,5 +631,201 @@ textarea {
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* ===================== ENHANCED FEATURES ===================== */
+
+/* Page Load Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+}
+
+.section:nth-child(1) { animation-delay: 0.05s; }
+.section:nth-child(2) { animation-delay: 0.1s; }
+.section:nth-child(3) { animation-delay: 0.15s; }
+.section:nth-child(4) { animation-delay: 0.2s; }
+.section:nth-child(5) { animation-delay: 0.25s; }
+.section:nth-child(6) { animation-delay: 0.3s; }
+.section:nth-child(7) { animation-delay: 0.35s; }
+.section:nth-child(8) { animation-delay: 0.4s; }
+
+.intro-section {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Progress/Summary Bar */
+.progress-bar {
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+    background: var(--white);
+    border-bottom: 1px solid var(--sophos-border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.progress-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--sophos-gray);
+}
+
+.stat-value {
+    font-weight: 700;
+    color: var(--sophos-blue);
+    font-size: 1.1rem;
+}
+
+.progress-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid var(--sophos-border);
+    background: var(--white);
+    color: var(--sophos-gray);
+    font-family: inherit;
+}
+
+.control-btn:hover {
+    border-color: var(--sophos-blue);
+    color: var(--sophos-blue);
+    background: var(--sophos-bg);
+}
+
+.control-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Auto-save Indicator */
+.autosave-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--sophos-gray-light);
+    padding: 0.35rem 0.7rem;
+    background: var(--sophos-bg);
+    border-radius: 20px;
+}
+
+.autosave-indicator.saving {
+    color: var(--sophos-blue);
+}
+
+.autosave-indicator svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Animated Checkbox */
+.interested-checkbox input[type="checkbox"] {
+    position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--sophos-border);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+}
+
+.interested-checkbox input[type="checkbox"]:checked {
+    background: var(--sophos-blue);
+    border-color: var(--sophos-blue);
+}
+
+.interested-checkbox input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    animation: checkmark 0.2s ease forwards;
+}
+
+@keyframes checkmark {
+    from {
+        opacity: 0;
+        transform: rotate(45deg) scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+}
+
+/* Pulse animation for count updates */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.stat-value.pulse {
+    animation: pulse 0.3s ease;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .progress-bar {
+        top: 52px;
+        padding: 0.6rem 1rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .progress-stats {
+        justify-content: center;
+    }
+    
+    .progress-controls {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }
 

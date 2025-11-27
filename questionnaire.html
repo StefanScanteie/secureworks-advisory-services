@@ -22,9 +22,43 @@
     <header class="header no-print">
         <div class="header-content">
             <img src="sophos-logo.svg" alt="Sophos" class="logo">
-            <span class="header-title">Advisory Services Questionnaire</span>
+            <span class="header-title">IMR Advisory Services Questionnaire</span>
         </div>
     </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar no-print">
+        <div class="progress-stats">
+            <div class="stat-item">
+                <span>Services Selected:</span>
+                <span class="stat-value" id="selected-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Sections:</span>
+                <span class="stat-value" id="sections-count">0/7</span>
+            </div>
+            <div class="autosave-indicator" id="autosave-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Auto-save on
+            </div>
+        </div>
+        <div class="progress-controls">
+            <button class="control-btn" onclick="expandAllSections()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+                Expand All
+            </button>
+            <button class="control-btn" onclick="collapseAllSections()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                </svg>
+                Collapse All
+            </button>
+        </div>
+    </div>
 
     <main class="container">
         <form id="questionnaire-form">
