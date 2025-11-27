@@ -1,4 +1,4 @@
-# Sophos IMR Advisory Services Questionnaire
+# Secureworks IMR Advisory Services Questionnaire
 
 A dynamic, interactive web-based questionnaire for Sophos Incident Management and Response (IMR) Advisory Services. This tool helps prospects identify their security needs and receive tailored recommendations from the IMR service catalog.
 
