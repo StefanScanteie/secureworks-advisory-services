@@ -471,7 +471,7 @@ function downloadPDF() {
         }
         .pdf-service-title {
             font-weight: bold;
-            color: #1A05C9;
+            color: #001A47;
             font-size: 13px;
             margin-bottom: 8px;
         }

@@ -4,10 +4,9 @@
    =========================================== */
 
 :root {
-    /* Official Sophos Blue #2006F7 from brand.sophos.com */
-    --sophos-blue: #2006F7;
-    --sophos-blue-dark: #1A05C9;
-    --sophos-blue-light: #4D35F9;
+    /* Official Sophos Colors from brand.sophos.com/identity#colors */
+    --sophos-blue: #2006F7;          /* Sophos Blue - Primary */
+    --sophos-blue-dark: #001A47;     /* Sophos Dark Blue */
     --sophos-bg: #EEEAFF;
     --sophos-gray: #4a5568;
     --sophos-gray-light: #718096;
@@ -315,7 +314,7 @@ body {
 }
 
 .service-block:hover {
-    border-color: var(--sophos-blue-light);
+    border-color: var(--sophos-blue);
 }
 
 .service-block:last-child {
