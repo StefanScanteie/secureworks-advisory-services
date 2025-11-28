@@ -1,6 +1,6 @@
 /* ===========================================
    Sophos IMR Advisory Services Questionnaire
-   Styles - Using Official Sophos Blue
+   Styles - macOS Settings-style Layout
    =========================================== */
 
 :root {
@@ -15,6 +15,9 @@
     --white: #ffffff;
     --shadow: 0 4px 24px rgba(32, 6, 247, 0.12);
     --shadow-lg: 0 8px 32px rgba(32, 6, 247, 0.18);
+    
+    /* Layout */
+    --sidebar-width: 320px;
 }
 
 * {
@@ -23,189 +26,269 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: linear-gradient(145deg, #f0f5fa 0%, #e2eaf3 100%);
-    min-height: 100vh;
     color: var(--sophos-gray);
     line-height: 1.65;
 }
 
-/* Header */
-.header {
-    background: var(--sophos-blue);
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 20px rgba(0, 94, 184, 0.25);
-}
-
-.header-content {
-    max-width: 960px;
-    margin: 0 auto;
+/* ===================== APP CONTAINER ===================== */
+.app-container {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.logo {
-    height: 34px;
-    width: auto;
-    /* Invert the logo colors for visibility on dark header */
-    filter: brightness(0) invert(1);
-}
-
-.header-title {
-    color: var(--white);
-    font-size: 0.95rem;
-    font-weight: 500;
-    opacity: 0.9;
-    border-left: 1px solid rgba(255,255,255,0.3);
-    padding-left: 1.5rem;
-}
-
-/* Container */
-.container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-/* Form Card */
-#questionnaire-form {
-    background: var(--white);
-    border-radius: 16px;
-    box-shadow: var(--shadow-lg);
+    height: 100vh;
     overflow: hidden;
 }
 
-.form-header {
-    background: linear-gradient(135deg, var(--sophos-blue) 0%, var(--sophos-blue-dark) 100%);
+/* ===================== SIDEBAR ===================== */
+.sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    background: var(--white);
+    border-right: 1px solid var(--sophos-border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--sophos-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--sophos-blue);
+}
+
+.sidebar-logo {
+    height: 32px;
+    width: auto;
+    filter: brightness(0) invert(1);
+}
+
+.sidebar-title {
     color: var(--white);
-    padding: 2.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.9;
     text-align: center;
 }
 
-.form-header h1 {
-    font-size: 1.85rem;
+/* Sidebar Navigation */
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    color: var(--sophos-gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    margin: 2px 0;
+}
+
+.nav-item:hover {
+    background: var(--sophos-bg);
+    color: var(--sophos-blue);
+}
+
+.nav-item.active {
+    background: var(--sophos-bg);
+    color: var(--sophos-blue);
+    border-left-color: var(--sophos-blue);
+    font-weight: 600;
+}
+
+.nav-item.has-selections {
+    position: relative;
+}
+
+.nav-item.has-selections::after {
+    content: '';
+    position: absolute;
+    right: 1.25rem;
+    width: 8px;
+    height: 8px;
+    background: var(--sophos-blue);
+    border-radius: 50%;
+}
+
+.nav-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nav-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--sophos-border);
+    background: #fafbfc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-stats {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-footer .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar-footer .stat-label {
+    font-size: 0.8rem;
+    color: var(--sophos-gray-light);
+}
+
+.sidebar-footer .stat-value {
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    color: var(--sophos-blue);
+}
+
+.autosave-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--sophos-gray-light);
+    padding: 0.35rem 0.7rem;
+    background: var(--sophos-bg);
+    border-radius: 20px;
+}
+
+.autosave-indicator.saving {
+    color: var(--sophos-blue);
+}
+
+.autosave-indicator svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ===================== MAIN CONTENT ===================== */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    background: linear-gradient(145deg, #f0f5fa 0%, #e2eaf3 100%);
+}
+
+#questionnaire-form {
+    height: 100%;
+}
+
+/* Content Sections */
+.content-section {
+    display: none;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.content-header {
+    background: linear-gradient(135deg, var(--sophos-blue) 0%, var(--sophos-blue-dark) 100%);
+    color: var(--white);
+    padding: 1.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.content-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
     letter-spacing: -0.02em;
 }
 
-.form-header p {
+.content-header p {
     opacity: 0.9;
-    font-size: 1rem;
+    font-size: 0.875rem;
 }
 
-.form-body {
-    padding: 2.5rem;
+.content-body {
+    padding: 2rem 2.5rem;
+    max-width: 900px;
 }
 
-/* Introduction Section */
-.intro-section {
-    background: var(--sophos-bg);
+/* ===================== INTRO SECTION ===================== */
+.intro-card {
+    background: var(--white);
     border-radius: 12px;
     padding: 1.75rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
     border-left: 4px solid var(--sophos-blue);
+    box-shadow: var(--shadow);
 }
 
-.intro-section h2 {
+.intro-card h2 {
     color: var(--sophos-blue);
     font-size: 1.15rem;
     margin-bottom: 0.75rem;
 }
 
-.intro-section p {
+.intro-card p {
     font-size: 0.95rem;
     margin-bottom: 1rem;
     color: var(--sophos-gray);
 }
 
-.intro-section p:last-child {
+.intro-card p:last-child {
     margin-bottom: 0;
 }
 
-.intro-section strong {
+.intro-card strong {
     color: var(--sophos-blue-dark);
 }
 
-/* Sections */
-.section {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--sophos-border);
+.intro-list {
+    margin-left: 1.5rem;
+    color: var(--sophos-gray);
 }
 
-.section:last-of-type {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+.intro-list li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
 
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    cursor: pointer;
-    user-select: none;
-    padding: 0.5rem;
-    margin: -0.5rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-
-.section-header:hover {
-    background: var(--sophos-bg);
-}
-
-.section-header .toggle-icon {
-    margin-left: auto;
-    transition: transform 0.3s ease;
-    color: var(--sophos-gray-light);
-}
-
-.section.collapsed .section-header .toggle-icon {
-    transform: rotate(-90deg);
-}
-
-.section-content {
-    overflow: hidden;
-    transition: max-height 0.5s ease, opacity 0.3s ease;
-    max-height: 20000px;
-    opacity: 1;
-}
-
-.section.collapsed .section-content {
-    max-height: 0;
-    opacity: 0;
-}
-
-.section-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--sophos-blue);
-    color: var(--white);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    font-weight: 700;
-    flex-shrink: 0;
-}
-
-.section-title {
-    color: var(--sophos-blue);
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-/* Subsection */
+/* ===================== SUBSECTIONS ===================== */
 .subsection {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -220,14 +303,15 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Service Block */
+/* ===================== SERVICE BLOCKS ===================== */
 .service-block {
-    background: #fafbfc;
+    background: var(--white);
     border: 1px solid var(--sophos-border);
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1rem;
     transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .service-block:hover {
@@ -240,7 +324,7 @@ body {
 
 .service-block.interested {
     border-color: var(--sophos-blue);
-    box-shadow: 0 0 0 3px rgba(0, 94, 184, 0.1);
+    box-shadow: 0 0 0 3px rgba(32, 6, 247, 0.1);
 }
 
 .service-header {
@@ -265,6 +349,14 @@ body {
     border-bottom: 1px dashed var(--sophos-border);
 }
 
+/* Service Actions */
+.service-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
 /* Interested Checkbox */
 .interested-checkbox {
     display: flex;
@@ -285,478 +377,6 @@ body {
     background: #d4e4f4;
 }
 
-/* Explain with AI Button */
-.explain-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--white);
-    border: 2px solid var(--sophos-border);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--sophos-gray);
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-    font-family: inherit;
-    white-space: nowrap;
-    height: 42px;
-    box-sizing: border-box;
-}
-
-.explain-btn:hover {
-    border-color: var(--sophos-blue);
-    color: var(--sophos-blue);
-    background: var(--sophos-bg);
-}
-
-.explain-btn svg {
-    width: 18px;
-    height: 18px;
-}
-
-
-.service-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.interested-checkbox input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--sophos-blue);
-    cursor: pointer;
-}
-
-.interested-checkbox input:checked + span {
-    color: var(--sophos-blue);
-}
-
-.interested-checkbox span {
-    font-weight: 600;
-    color: var(--sophos-gray);
-    font-size: 0.9rem;
-}
-
-/* Scoping Questions */
-.scoping-questions {
-    margin-top: 1rem;
-}
-
-.scoping-title {
-    font-weight: 700;
-    color: var(--sophos-blue);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-}
-
-/* Form Groups */
-.form-group {
-    margin-bottom: 1.25rem;
-}
-
-.form-group:last-child {
-    margin-bottom: 0;
-}
-
-label.question {
-    display: block;
-    font-weight: 500;
-    color: var(--sophos-blue-dark);
-    margin-bottom: 0.5rem;
-    font-size: 0.92rem;
-}
-
-/* Form Inputs */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="url"],
-textarea {
-    width: 100%;
-    padding: 0.7rem 1rem;
-    border: 2px solid var(--sophos-border);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: all 0.2s ease;
-    background: var(--white);
-}
-
-input:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--sophos-blue);
-    box-shadow: 0 0 0 4px rgba(0, 94, 184, 0.1);
-}
-
-textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-/* Radio Groups */
-.radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.radio-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.radio-item input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--sophos-blue);
-    cursor: pointer;
-}
-
-.radio-item span {
-    font-size: 0.92rem;
-}
-
-/* Contact Section */
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-}
-
-.contact-grid .form-group.full-width {
-    grid-column: 1 / -1;
-}
-
-/* Actions Bar */
-.actions {
-    padding: 1.5rem 2.5rem;
-    background: var(--sophos-bg);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-}
-
-.actions-note {
-    font-size: 0.85rem;
-    color: var(--sophos-gray-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    text-align: center;
-}
-
-.btn-group {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
-/* Buttons */
-.btn {
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: none;
-}
-
-.btn svg {
-    width: 18px;
-    height: 18px;
-}
-
-.btn-primary {
-    background: var(--sophos-blue);
-    color: var(--white);
-    box-shadow: 0 4px 14px rgba(0, 94, 184, 0.35);
-}
-
-.btn-primary:hover {
-    background: var(--sophos-blue-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 94, 184, 0.45);
-}
-
-.btn-secondary {
-    background: var(--white);
-    color: var(--sophos-blue);
-    border: 2px solid var(--sophos-border);
-}
-
-.btn-secondary:hover {
-    border-color: var(--sophos-blue);
-    color: var(--sophos-blue-dark);
-}
-
-.btn.loading {
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-/* Footer */
-.footer {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--sophos-gray-light);
-    font-size: 0.85rem;
-}
-
-.footer a {
-    color: var(--sophos-blue);
-    text-decoration: none;
-}
-
-.footer a:hover {
-    text-decoration: underline;
-}
-
-/* Catalog Link */
-.catalog-link {
-    margin-top: 2rem;
-    padding: 1rem 1.5rem;
-    background: var(--sophos-bg);
-    border-radius: 8px;
-    text-align: center;
-}
-
-.catalog-link span {
-    font-size: 0.9rem;
-    color: var(--sophos-gray);
-}
-
-.catalog-link a {
-    color: var(--sophos-blue);
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 0.25rem;
-}
-
-.catalog-link a:hover {
-    text-decoration: underline;
-}
-
-/* Print / PDF Styles */
-.no-print {
-    /* Will be hidden in PDF */
-}
-
-@media print {
-    .no-print {
-        display: none !important;
-    }
-    body {
-        background: white;
-    }
-    .header {
-        position: relative;
-    }
-    #questionnaire-form {
-        box-shadow: none;
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    .form-header,
-    .form-body {
-        padding: 1.5rem;
-    }
-    
-    .contact-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .actions {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 1.5rem;
-    }
-    
-    .btn-group {
-        flex-direction: column;
-    }
-    
-    .btn {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-    
-    .header-title {
-        border-left: none;
-        padding-left: 0;
-    }
-    
-    .service-header {
-        flex-direction: column;
-    }
-    
-    .radio-group {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-}
-
-/* Animation for loading state */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* ===================== ENHANCED FEATURES ===================== */
-
-/* Page Load Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.section {
-    animation: fadeInUp 0.5s ease forwards;
-    opacity: 0;
-}
-
-.section:nth-child(1) { animation-delay: 0.05s; }
-.section:nth-child(2) { animation-delay: 0.1s; }
-.section:nth-child(3) { animation-delay: 0.15s; }
-.section:nth-child(4) { animation-delay: 0.2s; }
-.section:nth-child(5) { animation-delay: 0.25s; }
-.section:nth-child(6) { animation-delay: 0.3s; }
-.section:nth-child(7) { animation-delay: 0.35s; }
-.section:nth-child(8) { animation-delay: 0.4s; }
-
-.intro-section {
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-/* Progress/Summary Bar */
-.progress-bar {
-    position: sticky;
-    top: 56px;
-    z-index: 90;
-    background: var(--white);
-    border-bottom: 1px solid var(--sophos-border);
-    padding: 0.75rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.progress-stats {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--sophos-gray);
-}
-
-.stat-value {
-    font-weight: 700;
-    color: var(--sophos-blue);
-    font-size: 1.1rem;
-}
-
-.progress-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.control-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 0.85rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid var(--sophos-border);
-    background: var(--white);
-    color: var(--sophos-gray);
-    font-family: inherit;
-}
-
-.control-btn:hover {
-    border-color: var(--sophos-blue);
-    color: var(--sophos-blue);
-    background: var(--sophos-bg);
-}
-
-.control-btn svg {
-    width: 14px;
-    height: 14px;
-}
-
-/* Auto-save Indicator */
-.autosave-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.75rem;
-    color: var(--sophos-gray-light);
-    padding: 0.35rem 0.7rem;
-    background: var(--sophos-bg);
-    border-radius: 20px;
-}
-
-.autosave-indicator.saving {
-    color: var(--sophos-blue);
-}
-
-.autosave-indicator svg {
-    width: 12px;
-    height: 12px;
-}
-
-/* Animated Checkbox */
 .interested-checkbox input[type="checkbox"] {
     position: relative;
     appearance: none;
@@ -799,7 +419,251 @@ textarea {
     }
 }
 
-/* Pulse animation for count updates */
+.interested-checkbox input:checked + span {
+    color: var(--sophos-blue);
+}
+
+.interested-checkbox span {
+    font-weight: 600;
+    color: var(--sophos-gray);
+    font-size: 0.9rem;
+}
+
+/* Explain with AI Button */
+.explain-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--white);
+    border: 2px solid var(--sophos-border);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--sophos-gray);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.explain-btn:hover {
+    border-color: var(--sophos-blue);
+    color: var(--sophos-blue);
+    background: var(--sophos-bg);
+}
+
+.explain-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ===================== SCOPING QUESTIONS ===================== */
+.scoping-questions {
+    margin-top: 1rem;
+}
+
+.scoping-title {
+    font-weight: 700;
+    color: var(--sophos-blue);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* ===================== FORM ELEMENTS ===================== */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+label.question {
+    display: block;
+    font-weight: 500;
+    color: var(--sophos-blue-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.92rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--sophos-border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: var(--white);
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--sophos-blue);
+    box-shadow: 0 0 0 4px rgba(32, 6, 247, 0.1);
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Radio Groups */
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.radio-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--sophos-blue);
+    cursor: pointer;
+}
+
+.radio-item span {
+    font-size: 0.92rem;
+}
+
+/* Contact Grid */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.contact-grid .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+/* ===================== ACTIONS ===================== */
+.actions {
+    padding: 1.5rem 0;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--sophos-border);
+}
+
+.actions-note {
+    font-size: 0.85rem;
+    color: var(--sophos-gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-primary {
+    background: var(--sophos-blue);
+    color: var(--white);
+    box-shadow: 0 4px 14px rgba(32, 6, 247, 0.35);
+}
+
+.btn-primary:hover {
+    background: var(--sophos-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(32, 6, 247, 0.45);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--sophos-blue);
+    border: 2px solid var(--sophos-border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--sophos-blue);
+    color: var(--sophos-blue-dark);
+}
+
+.btn.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* ===================== CATALOG LINK ===================== */
+.catalog-link {
+    margin-top: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--white);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--sophos-border);
+}
+
+.catalog-link span {
+    font-size: 0.9rem;
+    color: var(--sophos-gray);
+}
+
+.catalog-link a {
+    color: var(--sophos-blue);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+.catalog-link a:hover {
+    text-decoration: underline;
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.2); }
@@ -810,22 +674,131 @@ textarea {
     animation: pulse 0.3s ease;
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-    .progress-bar {
-        top: 52px;
-        padding: 0.6rem 1rem;
-        flex-direction: column;
-        align-items: stretch;
+/* ===================== SCROLLBAR STYLING ===================== */
+.sidebar-nav::-webkit-scrollbar,
+.content-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track,
+.content-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb,
+.content-section::-webkit-scrollbar-thumb {
+    background: var(--sophos-border);
+    border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover,
+.content-section::-webkit-scrollbar-thumb:hover {
+    background: var(--sophos-gray-light);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 900px) {
+    :root {
+        --sidebar-width: 260px;
     }
     
-    .progress-stats {
-        justify-content: center;
+    .content-body {
+        padding: 1.5rem;
     }
     
-    .progress-controls {
-        justify-content: center;
-        flex-wrap: wrap;
+    .content-header {
+        padding: 1.5rem;
     }
 }
 
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 50vh;
+        border-right: none;
+        border-bottom: 1px solid var(--sophos-border);
+    }
+    
+    .sidebar-nav {
+        max-height: 200px;
+    }
+    
+    .main-content {
+        height: 50vh;
+    }
+    
+    .content-section {
+        height: auto;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-header {
+        flex-direction: column;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-header {
+        padding: 1rem;
+    }
+    
+    .nav-item {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .content-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+/* ===================== PRINT STYLES ===================== */
+@media print {
+    .sidebar {
+        display: none !important;
+    }
+    
+    .app-container {
+        display: block;
+    }
+    
+    .main-content {
+        overflow: visible;
+    }
+    
+    .content-section {
+        display: block !important;
+        overflow: visible;
+        page-break-after: always;
+    }
+    
+    .content-header {
+        position: relative;
+    }
+    
+    .actions {
+        display: none;
+    }
+}

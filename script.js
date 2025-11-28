@@ -1,16 +1,69 @@
 /**
  * Sophos IMR Advisory Services Questionnaire
- * JavaScript - Enhanced with progress tracking and auto-save
+ * JavaScript - macOS Settings-style Layout
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    initializeSidebarNavigation();
     initializeExplainButtons();
     initializeInterestedCheckboxes();
-    initializeCollapsibleSections();
-    initializeProgressBar();
+    initializeProgressStats();
     initializeAutoSave();
     loadSavedData();
 });
+
+// ==================== SIDEBAR NAVIGATION ====================
+
+function initializeSidebarNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const sectionId = this.getAttribute('data-section');
+            showSection(sectionId);
+            
+            // Update active state
+            navItems.forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.section) {
+            showSection(e.state.section, false);
+        }
+    });
+}
+
+function showSection(sectionId, pushState = true) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show target section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        targetSection.scrollTop = 0;
+    }
+    
+    // Update nav state
+    document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.classList.remove('active');
+        if (nav.getAttribute('data-section') === sectionId) {
+            nav.classList.add('active');
+        }
+    });
+    
+    // Update URL hash
+    if (pushState) {
+        history.pushState({ section: sectionId }, '', '#' + sectionId);
+    }
+}
 
 // ==================== EXPLAIN WITH PERPLEXITY ====================
 
@@ -101,38 +154,8 @@ function explainWithAI(serviceName, docSlug) {
     window.open(baseUrl + encodedPrompt, '_blank');
 }
 
-// ==================== COLLAPSIBLE SECTIONS ====================
-function initializeCollapsibleSections() {
-    const sections = document.querySelectorAll('.section');
-    
-    // Collapse all sections by default
-    sections.forEach(section => {
-        section.classList.add('collapsed');
-    });
-    
-    // Add click handlers to toggle
-    const sectionHeaders = document.querySelectorAll('.section-header');
-    sectionHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            const section = this.closest('.section');
-            section.classList.toggle('collapsed');
-        });
-    });
-}
-
-function expandAllSections() {
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('collapsed');
-    });
-}
-
-function collapseAllSections() {
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.add('collapsed');
-    });
-}
-
 // ==================== INTERESTED CHECKBOXES ====================
+
 function initializeInterestedCheckboxes() {
     const checkboxes = document.querySelectorAll('.interested-checkbox input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
@@ -142,27 +165,27 @@ function initializeInterestedCheckboxes() {
                 serviceBlock.classList.toggle('interested', this.checked);
             }
             updateProgressStats();
+            updateNavIndicators();
             triggerAutoSave();
         });
     });
 }
 
-// ==================== PROGRESS BAR ====================
-function initializeProgressBar() {
+// ==================== PROGRESS STATS ====================
+
+function initializeProgressStats() {
     updateProgressStats();
-    document.getElementById('questionnaire-form')?.addEventListener('change', updateProgressStats);
+    updateNavIndicators();
+    document.getElementById('questionnaire-form')?.addEventListener('change', () => {
+        updateProgressStats();
+        updateNavIndicators();
+    });
 }
 
 function updateProgressStats() {
     const selectedServices = document.querySelectorAll('.service-block.interested').length;
-    const totalSections = document.querySelectorAll('.section').length;
-    const sectionsWithSelections = new Set(
-        Array.from(document.querySelectorAll('.service-block.interested'))
-            .map(s => s.closest('.section'))
-    ).size;
     
     const selectedEl = document.getElementById('selected-count');
-    const sectionsEl = document.getElementById('sections-count');
     
     if (selectedEl) {
         const oldValue = parseInt(selectedEl.textContent) || 0;
@@ -173,13 +196,34 @@ function updateProgressStats() {
             selectedEl.classList.add('pulse');
         }
     }
+}
+
+function updateNavIndicators() {
+    // Check each section for selections and update nav indicators
+    const sections = {
+        'section-1': document.querySelectorAll('#section-1 .service-block.interested').length,
+        'section-2': document.querySelectorAll('#section-2 .service-block.interested').length,
+        'section-3': document.querySelectorAll('#section-3 .service-block.interested').length,
+        'section-4': document.querySelectorAll('#section-4 .service-block.interested').length,
+        'section-5': document.querySelectorAll('#section-5 .service-block.interested').length,
+        'section-6': document.querySelectorAll('#section-6 .service-block.interested').length,
+        'section-7': document.querySelectorAll('#section-7 .service-block.interested').length,
+    };
     
-    if (sectionsEl) {
-        sectionsEl.textContent = `${sectionsWithSelections}/${totalSections - 1}`;
-    }
+    Object.keys(sections).forEach(sectionId => {
+        const navItem = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+        if (navItem) {
+            if (sections[sectionId] > 0) {
+                navItem.classList.add('has-selections');
+            } else {
+                navItem.classList.remove('has-selections');
+            }
+        }
+    });
 }
 
 // ==================== AUTO-SAVE ====================
+
 let autoSaveTimeout;
 
 function initializeAutoSave() {
@@ -220,6 +264,12 @@ function saveFormData() {
     formData.forEach((value, key) => { data[key] = value; });
     form.querySelectorAll('input[type="checkbox"]').forEach(cb => { data[cb.name] = cb.checked; });
     
+    // Save current section
+    const activeSection = document.querySelector('.content-section.active');
+    if (activeSection) {
+        data['_activeSection'] = activeSection.id;
+    }
+    
     localStorage.setItem('questionnaire_data', JSON.stringify(data));
     localStorage.setItem('questionnaire_saved_at', new Date().toISOString());
 }
@@ -233,6 +283,12 @@ function loadSavedData() {
         const form = document.getElementById('questionnaire-form');
         
         Object.keys(data).forEach(key => {
+            if (key === '_activeSection') {
+                // Restore active section
+                showSection(data[key], false);
+                return;
+            }
+            
             const element = form.querySelector(`[name="${key}"]`);
             if (!element) return;
             
@@ -250,6 +306,7 @@ function loadSavedData() {
         });
         
         updateProgressStats();
+        updateNavIndicators();
         
         const indicator = document.getElementById('autosave-indicator');
         if (indicator) {
@@ -258,7 +315,15 @@ function loadSavedData() {
     } catch (e) {
         console.error('Error loading saved data:', e);
     }
+    
+    // Handle URL hash on page load
+    if (window.location.hash) {
+        const sectionId = window.location.hash.substring(1);
+        showSection(sectionId, false);
+    }
 }
+
+// ==================== PDF DOWNLOAD ====================
 
 function downloadPDF() {
     const interestedServices = document.querySelectorAll('.service-block.interested');
@@ -279,8 +344,8 @@ function downloadPDF() {
     let currentSection = '';
 
     interestedServices.forEach(service => {
-        const section = service.closest('.section');
-        const sectionTitle = section?.querySelector('.section-title')?.textContent?.trim() || '';
+        const section = service.closest('.content-section');
+        const sectionTitle = section?.querySelector('.content-header h1')?.textContent?.trim() || '';
         const serviceTitle = service.querySelector('.service-title')?.textContent?.trim() || 'Service';
 
         if (sectionTitle && sectionTitle !== currentSection) {
@@ -505,6 +570,8 @@ function clearForm() {
         localStorage.removeItem('questionnaire_data');
         localStorage.removeItem('questionnaire_saved_at');
         updateProgressStats();
+        updateNavIndicators();
+        showSection('intro', false);
         const indicator = document.getElementById('autosave-indicator');
         if (indicator) indicator.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Cleared';
     }
